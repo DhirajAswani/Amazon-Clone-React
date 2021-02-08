@@ -1,11 +1,26 @@
 import React from 'react'
 import ReactStars from "react-rating-stars-component";
+import {useStateValue} from './StateProvider'
 
 
-function CheckoutProduct(id, image, price, rating, title) {
 
+function CheckoutProduct({id, image, price, rating, title}) {
+
+    //const {id, image, price, rating, title} = props;
     console.log(id);
     
+    const [{basket}, dispatch] = useStateValue();
+
+    
+    const removeFromBasket = () => {
+
+        //remove the item from the basket
+        dispatch({
+            type: 'REMOVE_FROM_BASKET',
+            id: id,
+        })
+    }
+
     return (
         <div className="checkoutProduct">
             <img className="checkoutProduct_image" src={image}/>
@@ -16,7 +31,7 @@ function CheckoutProduct(id, image, price, rating, title) {
                 <div className="checkoutProduct_rating">
                     <ReactStars count={rating} color={"#ffd700"}/>
                 </div>
-                <button>Remove from Basket</button>
+                <button onClick={removeFromBasket}>Remove from Basket</button>
             </div>
             
         </div>

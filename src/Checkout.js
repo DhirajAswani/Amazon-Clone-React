@@ -11,6 +11,7 @@ function Checkout() {
 
     const [{basket}, dispatch] = useStateValue();
     var products = [];
+    var cnt = 0;
     for(var i = 0; i < basket.length; i++)
     {
        console.log(basket[i].id);
@@ -50,7 +51,7 @@ function Checkout() {
 
                     {/* Checkout Products */}
 
-                    {
+                    {/* {
                         basket.map(item => (
                             <div className="checkoutProduct">
                                 <img className="checkoutProduct_image" src={item.image}/>
@@ -68,12 +69,14 @@ function Checkout() {
                         )) 
 
                         
-                    }
+                    } */}
 
-                    {/* {
+                    {
+                        
                         basket.map(item => (
+                        
                         <CheckoutProduct
-                                key= {item.id}
+                                key= {cnt++}
                                 id= {item.id}
                                 title = {item.title}
                                 image = {item.image}
@@ -82,7 +85,7 @@ function Checkout() {
                                 
                             />
                         ))
-                    } */}
+                    }
                     
                 </div>
             </div>
