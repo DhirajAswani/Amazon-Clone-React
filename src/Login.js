@@ -1,10 +1,52 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Login.css'
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
+import {auth} from './firebase'
 
 
 
 function Login() {
+
+
+    const history = useHistory();
+
+    const [email, setEmail] = useState('');
+
+    const [password, setPassword] = useState('');
+
+    const signIn = e => {
+        e.preventDefault();
+
+        console.log(email)
+        console.log(password)
+
+        auth
+            .signInWithEmailAndPassword(email,password)
+            .then(auth => {
+                history.push('/')
+            })
+            .catch(error => alert(error.message))
+
+    }
+
+    const register = e => {
+        e.preventDefault();
+
+        auth
+            .createUserWithEmailAndPassword(email, password)
+            .then((auth) => {
+                console.log(auth)
+
+                if(auth) {
+                    history.push('/')
+                }
+            })
+            .catch(error => alert(error.message))
+
+
+    }
+
+
     return (
         <div className="login">
             <Link to = "/">
@@ -16,11 +58,11 @@ function Login() {
 
                 <form>
                     <h5>E-mail</h5>
-                    <input type="text" />
+                    <input type="text" value={email} onChange={e => setEmail(e.target.value)} />
                     <h5>Password</h5>
-                    <input type="password" />
+                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
 
-                    <button className="login_loginButton">Sign In</button>
+                    <button className="login_loginButton" type='submit' onClick={signIn}>Sign In</button>
                 </form>
 
                 <p>
@@ -30,7 +72,7 @@ function Login() {
                     and our Interest-Based Ads Notice
                 </p>
 
-                <button className="login_registerButton">Create your Amazon Account</button>
+                <button className="login_registerButton" onClick={register}>Create your Amazon Account</button>
             </div>
         </div>
     )
