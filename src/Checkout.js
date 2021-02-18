@@ -9,7 +9,7 @@ import ReactStars from "react-rating-stars-component";
 
 function Checkout() {
 
-    const [{basket}, dispatch] = useStateValue();
+    const [{basket, user}, dispatch] = useStateValue();
     var products = [];
     var cnt = 0;
     for(var i = 0; i < basket.length; i++)
@@ -41,6 +41,7 @@ function Checkout() {
                     <img src="https://images-na.ssl-images-amazon.com/images/G/02/UK_CCMP/TM/OCC_Amazon1._CB423492668_.jpg" alt="Product" />
                 </div>
                 <div className="checkout_title">
+                    <h1>Hello, {user?.email}</h1>
                     <h2>Your Shopping Basket</h2>
                     {/* <p>{basket[0].id}</p>
                     <p>{basket[0].image}</p>
