@@ -4,10 +4,10 @@ import {useStateValue} from './StateProvider'
 
 
 
-function CheckoutProduct({id, image, price, rating, title}) {
+function CheckoutProduct({id, image, price, rating, title, hideButton}) {
 
     //const {id, image, price, rating, title} = props;
-    console.log(id);
+    console.log("Id >>>>>>>>>>>>>> ",id);
     
     const [{basket}, dispatch] = useStateValue();
 
@@ -31,7 +31,10 @@ function CheckoutProduct({id, image, price, rating, title}) {
                 <div className="checkoutProduct_rating">
                     <ReactStars count={rating} color={"#ffd700"}/>
                 </div>
-                <button onClick={removeFromBasket}>Remove from Basket</button>
+                {!hideButton && (
+                    <button onClick={removeFromBasket}>Remove from Basket</button>
+                )}
+                
             </div>
             
         </div>

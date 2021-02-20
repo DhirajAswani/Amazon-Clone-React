@@ -7,6 +7,7 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import CurrencyFormat from 'react-currency-format';
 import { getBasketTotal } from './reducer';
 import axios from './axios';
+import {db} from './firebase'
 
 
 
@@ -20,6 +21,8 @@ function Payment() {
     const [succeeded, setSucceeded] = useState(false);
     const [processing, setProcessing] = useState(null);
     const [clientSecret, setClientSecret] = useState(true);
+
+    var cnt = 0;
 
     const stripe = useStripe();
     const elements = useElements();
@@ -41,6 +44,7 @@ function Payment() {
 
     }, [basket])
 
+    console.log("The client secret is ", clientSecret);
 
     const handleSubmit = async (event) => {
         event.preventDefault(); // will stop from refreshing
@@ -53,9 +57,24 @@ function Payment() {
         }).then(({paymentIntent}) => {
             //paymentIntent = payment confirmation
 
+            db
+              .collection('users')
+              .doc(user?.uid)
+              .collection('orders')
+              .doc(paymentIntent.id)
+              .set({
+                  basket: basket,
+                  amount: paymentIntent.amount,
+                  created: paymentIntent.created
+              })
+
             setSucceeded(true);
             setError(null);
             setProcessing(false);
+
+            // dispatch({
+            //     type: 'EMPTY_BASKET'
+            // })
 
             history.replace('/orders')
         })
@@ -98,7 +117,9 @@ function Payment() {
                     <div className='payment_items'>
                         {/* All Products in cart will come here */}
                         {basket.map(item => (
-                            <CheckoutProduct
+                        
+                        <CheckoutProduct
+                                key= {cnt++}
                                 id={item.id}
                                 title={item.title}
                                 image={item.image}
